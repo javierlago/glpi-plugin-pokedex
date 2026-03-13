@@ -1,0 +1,69 @@
+{% extends "generic_show_form.html.twig" %}
+{% import "components/form/fields_macros.html.twig" as fields %}
+
+{% block more_fields %}
+
+    {% if not item.isNewItem() and item.fields.image_url is not empty %}
+
+        {% set type_colors = {
+            'normal':   '#A8A77A', 'fire':     '#EE8130', 'water':    '#6390F0',
+            'electric': '#F7D02C', 'grass':    '#7AC74C', 'ice':      '#96D9D6',
+            'fighting': '#C22E28', 'poison':   '#A33EA1', 'ground':   '#E2BF65',
+            'flying':   '#A98FF3', 'psychic':  '#F95587', 'bug':      '#A6B91A',
+            'rock':     '#B6A136', 'ghost':    '#735797', 'dragon':   '#6F35FC',
+            'dark':     '#705746', 'steel':    '#B7B7CE', 'fairy':    '#D685AD',
+        } %}
+
+        {% set pokemon_types = item.fields.types ? item.fields.types|split(', ') : [] %}
+        {% set primary_type = pokemon_types[0]|default('normal') %}
+        {% set secondary_type = pokemon_types[1]|default(primary_type) %}
+        {% set color1 = type_colors[primary_type]|default('#A8A77A') %}
+        {% set color2 = type_colors[secondary_type]|default(color1) %}
+
+        {% set type_badges = '' %}
+        {% for t in pokemon_types %}
+            {% set badge_color = type_colors[t]|default('#A8A77A') %}
+            {% set type_badges = type_badges ~ '<span class="pokemon-card-type-badge" style="background:' ~ badge_color ~ ';">' ~ t ~ '</span>' %}
+        {% endfor %}
+
+        {% set weight_kg = (item.fields.weight / 10)|number_format(1) %}
+        {% set height_m = (item.fields.height / 10)|number_format(1) %}
+
+        {% set card_html %}
+            <div class="pokemon-card-wrapper">
+                <div class="pokemon-card"
+                     style="background:linear-gradient(145deg, {{ color1 }}CC 0%, {{ color2 }}CC 100%);
+                            --pokemon-color1:{{ color1 }};
+                            --pokemon-glow:{{ color1 }}66;">
+                    <div class="pokemon-card-header">
+                        <span class="pokemon-card-name">{{ item.fields.name }}</span>
+                        <span class="pokemon-card-number">#{{ item.fields.pokemon_id }}</span>
+                    </div>
+                    <div class="pokemon-card-image-container">
+                        <img src="{{ item.fields.image_url }}" alt="{{ item.fields.name }}">
+                    </div>
+                    <div class="pokemon-card-types">{{ type_badges|raw }}</div>
+                    <div class="pokemon-card-stats">
+                        <div>
+                            <div class="pokemon-card-stat-label">Peso</div>
+                            <div class="pokemon-card-stat-value">{{ weight_kg }} kg</div>
+                        </div>
+                        <div class="pokemon-card-divider"></div>
+                        <div>
+                            <div class="pokemon-card-stat-label">Altura</div>
+                            <div class="pokemon-card-stat-value">{{ height_m }} m</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endset %}
+
+        {{ fields.htmlField(
+            '',
+            card_html,
+            '',
+            field_options|merge({ 'full_width': true })
+        ) }}
+    {% endif %}
+
+{% endblock %}
