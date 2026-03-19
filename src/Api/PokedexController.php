@@ -3,6 +3,7 @@
 namespace GlpiPlugin\Pokedex\Api;
 
 use Glpi\Api\HL\Controller\AbstractController;
+use Glpi\Api\HL\Doc as Doc;
 use Glpi\Api\HL\Route;
 use Glpi\Api\HL\RouteVersion;
 use Glpi\Http\JSONResponse;
@@ -20,6 +21,7 @@ final class PokedexController extends AbstractController
 
     #[Route(path: '/Pokemon', methods: ['GET'], security_level: Route::SECURITY_AUTHENTICATED)]
     #[RouteVersion(introduced: '2.0')]
+    #[Doc\Route(description: 'List all registered Pokemon. Returns an array of Pokemon objects with their ID, name, types, weight, height and sprite image URL.')]
     public function listPokemons(Request $request): Response
     {
         global $DB;
@@ -47,6 +49,7 @@ final class PokedexController extends AbstractController
 
     #[Route(path: '/Pokemon/{id}', methods: ['GET'], requirements: ['id' => '\d+'], security_level: Route::SECURITY_AUTHENTICATED)]
     #[RouteVersion(introduced: '2.0')]
+    #[Doc\Route(description: 'Get a single Pokemon by its database ID. Returns 404 if the Pokemon does not exist or has been deleted.')]
     public function getPokemon(Request $request): Response
     {
         $id = (int) $request->getAttribute('id');
