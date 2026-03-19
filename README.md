@@ -92,6 +92,20 @@ All endpoints require OAuth2 Bearer token authentication.
 | `GET` | `/api.php/Pokedex/Pokemon` | List all Pokemon |
 | `GET` | `/api.php/Pokedex/Pokemon/{id}` | Get a single Pokemon by ID |
 
+### Swagger UI (Interactive API docs)
+
+GLPI 11 includes built-in Swagger UI that automatically documents all API endpoints, including those from plugins. The Pokedex endpoints appear under the **Pokedex** tag with their descriptions.
+
+![Swagger UI](docs/screenshots/SwaggerDoc.png)
+
+To access Swagger UI:
+1. Log in to GLPI in your browser (e.g. `http://localhost:8083`)
+2. Navigate to `http://localhost:8083/api.php/swagger` in the same browser
+
+You must be logged in to GLPI first, as Swagger UI uses cookie-based authentication. From there, you can browse, test and interact with all available API endpoints directly from the browser.
+
+The OpenAPI schema is also available in JSON format at `/api.php/v2/doc.json`.
+
 ### Authentication flow
 
 ```bash
