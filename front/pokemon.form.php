@@ -3,6 +3,8 @@
 use GlpiPlugin\Pokedex\Pokemon;
 use Glpi\Exception\Http\NotFoundHttpException;
 
+global $CFG_GLPI;
+
 $plugin = new Plugin();
 if (!$plugin->isInstalled('pokedex') || !$plugin->isActivated('pokedex')) {
     throw new NotFoundHttpException();
@@ -18,7 +20,7 @@ if (isset($_POST['add'])) {
 } else if (isset($_POST['update'])) {
     $pokemon->check($_POST['id'], UPDATE);
     $pokemon->update($_POST);
-    Html::back();
+    $pokemon->redirectToList();
 
 } else if (isset($_POST['delete'])) {
     $pokemon->check($_POST['id'], DELETE);
@@ -40,7 +42,7 @@ if (isset($_POST['add'])) {
     Html::header(
         Pokemon::getTypeName(),
         $_SERVER['PHP_SELF'],
-        'plugins',
+        'tools',
         Pokemon::class,
         'pokemon'
     );
