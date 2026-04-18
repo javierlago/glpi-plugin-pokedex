@@ -8,11 +8,26 @@ use Glpi\Application\View\TemplateRenderer;
 
 class Pokemon extends CommonDBTM
 {
-    static $rightname = 'computer';
+    static $rightname = 'pokedex';
 
     public static function getTypeName($nb = 0)
     {
         return 'Pokémon';
+    }
+
+    public static function getIcon()
+    {
+        return 'ti ti-bug';
+    }
+
+    public function getRights($interface = 'central')
+    {
+        return [
+            READ   => __('Read'),
+            CREATE => __('Create'),
+            UPDATE => __('Update'),
+            PURGE  => ['short' => __('Purge'), 'long' => _x('button', 'Delete permanently')],
+        ];
     }
 
     public static function getMenuName($nb = 0)
@@ -27,10 +42,12 @@ class Pokemon extends CommonDBTM
 
         return [
             'title'   => 'Pokédex',
+            'icon'    => self::getIcon(),
             'page'    => $search,
             'options' => [
                 'pokemon' => [
                     'title' => self::getMenuName(Session::getPluralNumber()),
+                    'icon'  => self::getIcon(),
                     'page'  => $search,
                     'links' => [
                         'search' => $search,

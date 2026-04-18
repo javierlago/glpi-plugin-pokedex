@@ -1,5 +1,7 @@
 <?php
 
+use GlpiPlugin\Pokedex\Pokemon;
+
 function plugin_pokedex_install()
 {
     global $DB;
@@ -29,6 +31,8 @@ function plugin_pokedex_install()
 
     $migration->executeMigration();
 
+    ProfileRight::addProfileRights([Pokemon::$rightname]);
+
     return true;
 }
 
@@ -37,6 +41,8 @@ function plugin_pokedex_uninstall()
     global $DB;
 
     $DB->doQuery("DROP TABLE IF EXISTS `glpi_plugin_pokedex_pokemons`");
+
+    ProfileRight::deleteProfileRights([Pokemon::$rightname]);
 
     return true;
 }

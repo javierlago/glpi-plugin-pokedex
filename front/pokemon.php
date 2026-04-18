@@ -13,7 +13,7 @@ if (Pokemon::canView()) {
     Html::header(
         Pokemon::getTypeName(),
         $_SERVER['PHP_SELF'],
-        'plugins',
+        'tools',
         Pokemon::class,
         'pokemon'
     );
